@@ -30,13 +30,12 @@ model Restaurant {
   name             String
   email            String   @unique
   address          String
-  phone            String
+  contact          String
   openingTime      String
   closingTime      String
   status           String
-  wifi             String
-  postalCode       String 
-
+  wifiCode         String
+  postalCode       String
 }
 
 
