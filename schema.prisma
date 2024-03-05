@@ -7,40 +7,42 @@ generator client {
   provider = "prisma-client-js"
 }
 
-
-model Employee {
-  id               Int     @id @default(autoincrement())
+model User {
+  id               Int      @id @default(autoincrement())
   firstName        String
   lastName         String
-  email            String  @unique
-  address          String
-  salary           Float
-  employmentStatus String
+  email            String   @unique
+  address          String?
+  salary           Float?
+  employmentStatus String?
   gender           String
-  contact          String
+  contact          String?
   role             String
-  emergencyContact String
-  dateOfBirth      String
-  dateOfHire       String
+  emergencyContact String?
+  dateOfBirth      String?
+  dateOfHire       String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
-
 
 model Restaurant {
-  id               Int      @id @default(autoincrement())
-  name             String
-  email            String   @unique
-  address          String
-  contact          String
-  openingTime      String
-  closingTime      String
-  status           String
-  wifiCode         String
-  postalCode       String
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String   @unique
+  address     String
+  contact     String
+  openingTime String
+  closingTime String
+  status      String
+  wifiCode    String
+  postalCode  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
-
-
 model Category {
-  id               Int      @id @default(autoincrement())
-  name             String
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

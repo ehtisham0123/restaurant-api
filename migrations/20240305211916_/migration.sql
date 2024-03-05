@@ -1,20 +1,22 @@
 -- CreateTable
-CREATE TABLE `Employee` (
+CREATE TABLE `User` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `firstName` VARCHAR(191) NOT NULL,
     `lastName` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
-    `address` VARCHAR(191) NOT NULL,
-    `salary` DOUBLE NOT NULL,
-    `employmentStatus` VARCHAR(191) NOT NULL,
+    `address` VARCHAR(191) NULL,
+    `salary` DOUBLE NULL,
+    `employmentStatus` VARCHAR(191) NULL,
     `gender` VARCHAR(191) NOT NULL,
-    `contact` VARCHAR(191) NOT NULL,
+    `contact` VARCHAR(191) NULL,
     `role` VARCHAR(191) NOT NULL,
-    `emergencyContact` VARCHAR(191) NOT NULL,
-    `dateOfBirth` VARCHAR(191) NOT NULL,
-    `dateOfHire` VARCHAR(191) NOT NULL,
+    `emergencyContact` VARCHAR(191) NULL,
+    `dateOfBirth` VARCHAR(191) NULL,
+    `dateOfHire` VARCHAR(191) NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `Employee_email_key`(`email`),
+    UNIQUE INDEX `User_email_key`(`email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -30,6 +32,8 @@ CREATE TABLE `Restaurant` (
     `status` VARCHAR(191) NOT NULL,
     `wifiCode` VARCHAR(191) NOT NULL,
     `postalCode` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Restaurant_email_key`(`email`),
     PRIMARY KEY (`id`)
@@ -39,6 +43,8 @@ CREATE TABLE `Restaurant` (
 CREATE TABLE `Category` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
