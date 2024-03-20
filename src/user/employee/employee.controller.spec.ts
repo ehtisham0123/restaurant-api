@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EmployeeController } from './employee.controller';
 import { EmployeeService } from './employee.service';
-import { PrismaService } from '../../prisma/prisma.service'; // Adjust the path
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { createEmployeeMock } from './employee.mock';
 
 describe('EmployeeController', () => {
   let controller: EmployeeController;
@@ -14,13 +14,6 @@ describe('EmployeeController', () => {
       controllers: [EmployeeController],
       providers: [
         EmployeeService,
-        {
-          provide: PrismaService,
-          // Mock PrismaService methods as needed for testing
-          useValue: {
-            // Mock PrismaService methods here if necessary
-          },
-        },
       ],
     }).compile();
 
@@ -34,32 +27,16 @@ describe('EmployeeController', () => {
   });
   describe('create', () => {
     it('should create a new employee', async () => {
-      const newEmployee: CreateEmployeeDto = {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john@example.com',
-        address: '123 Main St',
-        salary: 50000,
-        contact: '1234567890',
-        emergencyContact: '0987654321',
-        gender: 'Male',
-        employmentStatus: 'Full-time',
-        dateOfBirth: '1990-01-01',
-        role: 'Employee',
-        dateOfHire: '2024-01-01'
-      };
-
-      jest.spyOn(service, 'create').mockResolvedValue(newEmployee);
-
-      const result = await controller.create(newEmployee);
-      expect(result).toEqual(newEmployee);
+      jest.spyOn(service, 'create').mockResolvedValue(createEmployeeMock);
+      const result = await controller.create(createEmployeeMock);
+      expect(result).toEqual(createEmployeeMock);
     });
   });
 
   describe('findAll', () => {
     it('should return all employees', async () => {
       const employees: CreateEmployeeDto[] = [
-        { firstName: 'John', lastName: 'Doe', email: 'john@example.com', address: '123 Main St', salary: 50000, contact: '123-456-7890', emergencyContact: '987-654-3210', gender: 'Male', employmentStatus: 'Full-time', dateOfBirth: '1990-01-01', role: 'Manager', dateOfHire: '2022-01-01' }
+        createEmployeeMock
       ];
       jest.spyOn(service, 'findAll').mockResolvedValue(employees);
 
@@ -69,12 +46,11 @@ describe('EmployeeController', () => {
   });
   describe('findOne', () => {
     it('should return the employee with the given ID', async () => {
-      const employeeId = '1';
-      const employee = { firstName: 'John', lastName: 'Doe', email: 'john@example.com', address: '123 Main St', salary: 50000, contact: '123-456-7890', emergencyContact: '987-654-3210', gender: 'Male', employmentStatus: 'Full-time', dateOfBirth: '1990-01-01', role: 'Manager', dateOfHire: '2022-01-01' };
-      jest.spyOn(service, 'findOne').mockResolvedValue(employee);
+      const employeeId = '13213123-213213';
+      jest.spyOn(service, 'findOne').mockResolvedValue(createEmployeeMock);
 
       const result = await controller.findOne(employeeId);
-      expect(result).toBe(employee);
+      expect(result).toBe(createEmployeeMock);
     });
   });
 
@@ -82,11 +58,10 @@ describe('EmployeeController', () => {
     it('should update the employee with the given ID', async () => {
       const employeeId = '1';
       const updateDto: UpdateEmployeeDto = { firstName: 'Jane' };
-      const updatedEmployee = { firstName: 'John', lastName: 'Doe', email: 'john@example.com', address: '123 Main St', salary: 50000, contact: '123-456-7890', emergencyContact: '987-654-3210', gender: 'Male', employmentStatus: 'Full-time', dateOfBirth: '1990-01-01', role: 'Manager', dateOfHire: '2022-01-01' };
-      jest.spyOn(service, 'update').mockResolvedValue(updatedEmployee);
+      jest.spyOn(service, 'update').mockResolvedValue(createEmployeeMock);
 
       const result = await controller.update(employeeId, updateDto);
-      expect(result).toBe(updatedEmployee);
+      expect(result).toBe(createEmployeeMock);
     });
   });
 

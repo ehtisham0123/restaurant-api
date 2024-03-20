@@ -22,3 +22,4 @@ const config: Config = {
 };
 
 export default (): Config => config;
+ 

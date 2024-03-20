@@ -9,7 +9,7 @@ import { Employee } from './entities/employee.entity';
 @Controller('user/employee')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
-
+ 
   @ApiOkResponse({
     type: Employee,
     description: 'Create a new employee',
@@ -19,11 +19,10 @@ export class EmployeeController {
     return this.employeeService.create(createEmployeeDto);
   }
 
-
   @ApiOkResponse({
     isArray: true,
     type: Employee,
-    description: 'Get all employees entities',
+    description: 'Get all employees',
   })
   @Get()
   findAll() {
@@ -32,28 +31,28 @@ export class EmployeeController {
 
   @ApiOkResponse({
     type: Employee,
-    description: 'Get employee entity by given id',
+    description: 'Get employee by given id',
   })
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.employeeService.findOne(+id);
+    return this.employeeService.findOne(id);
   }  
   
   @ApiOkResponse({
     type: Employee,
-    description: 'Update the tire employee entity by given id',
+    description: 'Update the employee by given id',
   })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateEmployeeDto: UpdateEmployeeDto) {
-    return this.employeeService.update(+id, updateEmployeeDto);
+    return this.employeeService.update(id, updateEmployeeDto);
   }
 
   @ApiOkResponse({
     type: Employee,
-    description: 'Delete the employee entity by given id',
+    description: 'Delete the employee by given id',
   })
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.employeeService.remove(+id);
+    return this.employeeService.remove(id);
   }
 }

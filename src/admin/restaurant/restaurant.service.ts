@@ -19,7 +19,7 @@ export class RestaurantService {
     return this.prisma.restaurant.findMany();
   }
 
-  async findOne(id: number): Promise<CreateRestaurantDto> {
+  async findOne(id: string): Promise<CreateRestaurantDto> {
     const restaurant = await this.prisma.restaurant.findUnique({
       where: { id },
     });
@@ -29,7 +29,7 @@ export class RestaurantService {
     return restaurant;
   }
 
-  async update(id: number, updateRestaurantDto: UpdateRestaurantDto): Promise<CreateRestaurantDto> {
+  async update(id: string, updateRestaurantDto: UpdateRestaurantDto): Promise<CreateRestaurantDto> {
     try {
       return await this.prisma.restaurant.update({
         where: { id },
@@ -40,7 +40,7 @@ export class RestaurantService {
     }
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     try {
       await this.prisma.restaurant.delete({
         where: { id },

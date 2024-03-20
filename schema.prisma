@@ -8,10 +8,11 @@ generator client {
 }
 
 model User {
-  id               Int      @id @default(autoincrement())
+  id               String   @id @default(uuid())
   firstName        String
   lastName         String
   email            String   @unique
+  password         String?
   address          String?
   salary           Float?
   employmentStatus String?
@@ -26,7 +27,7 @@ model User {
 }
 
 model Restaurant {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid())
   name        String
   email       String   @unique
   address     String
@@ -41,8 +42,40 @@ model Restaurant {
 }
 
 model Category {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Menu      Menu[]
+}
+
+model Menu {
+  id              String @id @default(uuid())
+  image           String
+  name            String
+  price           String
+  isAvailable     String
+  preparationTime String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Category   Category    @relation(fields: [categoryId], references: [id])
+  categoryId String
+  OrderItem  OrderItem[]
+}
+
+model Order {
+  id    String      @id @default(uuid())
+  items OrderItem[]
+}
+
+model OrderItem {
+  id       String @id @default(uuid())
+  order    Order  @relation(fields: [orderId], references: [id])
+  menu     Menu   @relation(fields: [menuId], references: [id])
+  quantity Int
+  price    Float
+  orderId  String
+  menuId   String
 }

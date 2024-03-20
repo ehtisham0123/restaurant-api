@@ -54,8 +54,7 @@ export class CreateEmployeeDto {
     @ApiProperty()
     @IsString({ message: 'Invalid Role' })
     role: string;
-
-
+    
     @ApiProperty()
     @IsString({ message: 'Invalid Hiring Date' })
     dateOfHire: string;
