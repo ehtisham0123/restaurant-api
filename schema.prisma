@@ -44,38 +44,61 @@ model Restaurant {
 model Category {
   id        String   @id @default(uuid())
   name      String
+  Menu      Menu[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Menu      Menu[]
 }
 
 model Menu {
-  id              String @id @default(uuid())
+  id              String      @id @default(uuid())
   image           String
   name            String
   price           String
   isAvailable     String
   preparationTime String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  Category   Category    @relation(fields: [categoryId], references: [id])
-  categoryId String
-  OrderItem  OrderItem[]
+  Category        Category    @relation(fields: [categoryId], references: [id])
+  categoryId      String
+  OrderItem       OrderItem[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
 }
 
 model Order {
-  id    String      @id @default(uuid())
-  items OrderItem[]
+  id        String      @id @default(uuid())
+  items     OrderItem[]
+  status    Int         @default(0)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 }
 
 model OrderItem {
   id       String @id @default(uuid())
-  order    Order  @relation(fields: [orderId], references: [id])
-  menu     Menu   @relation(fields: [menuId], references: [id])
   quantity Int
   price    Float
+  order    Order  @relation(fields: [orderId], references: [id])
+  menu     Menu   @relation(fields: [menuId], references: [id])
   orderId  String
   menuId   String
+}
+
+enum UnitOfMeasurement {
+  Grams
+  Kilograms
+  Milliliters
+  Liters
+  Teaspoons
+  Tablespoons
+  Cups
+  Pieces
+  Others
+}
+
+model Ingredient {
+  id                String            @id @default(uuid())
+  name              String
+  quantity          Int
+  unitOfMeasurement UnitOfMeasurement
+  cost              Float
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
 }
