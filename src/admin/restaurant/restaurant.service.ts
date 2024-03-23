@@ -8,18 +8,18 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class RestaurantService {
   constructor(private prisma: PrismaService) { }
 
-  async create(createRestaurantDto: CreateRestaurantDto): Promise<CreateRestaurantDto> {
+  async create(createRestaurantDto: CreateRestaurantDto) {
     const restaurant = await this.prisma.restaurant.create({
       data: createRestaurantDto,
     });
     return restaurant;
   }
 
-  async findAll(): Promise<CreateRestaurantDto[]> {
-    return this.prisma.restaurant.findMany();
+  async findAll() {
+    return await this.prisma.restaurant.findMany();
   }
 
-  async findOne(id: string): Promise<CreateRestaurantDto> {
+  async findOne(id: string) {
     const restaurant = await this.prisma.restaurant.findUnique({
       where: { id },
     });
@@ -29,7 +29,7 @@ export class RestaurantService {
     return restaurant;
   }
 
-  async update(id: string, updateRestaurantDto: UpdateRestaurantDto): Promise<CreateRestaurantDto> {
+  async update(id: string, updateRestaurantDto: UpdateRestaurantDto) {
     try {
       return await this.prisma.restaurant.update({
         where: { id },
@@ -40,7 +40,7 @@ export class RestaurantService {
     }
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string) {
     try {
       await this.prisma.restaurant.delete({
         where: { id },

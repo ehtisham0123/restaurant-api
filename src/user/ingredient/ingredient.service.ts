@@ -8,17 +8,17 @@ import { Ingredient } from './entities/ingredient.entity';
 export class IngredientService {
   constructor(private prisma: PrismaService) { }
 
-  create(createIngredientDto: CreateIngredientDto): Promise<any> {
+  create(createIngredientDto: CreateIngredientDto) {
     return this.prisma.ingredient.create({
       data: createIngredientDto,
     });
   }
 
-  findAll(): Promise<any[]> {
+  findAll() {
     return this.prisma.ingredient.findMany();
   }
 
-  async findOne(id: string): Promise<any> {
+  async findOne(id: string) {
     const ingredient = await this.prisma.ingredient.findUnique({
       where: { id },
     });
@@ -28,7 +28,7 @@ export class IngredientService {
     return ingredient;
   }
 
-  async update(id: string, updateIngredientDto: UpdateIngredientDto): Promise<any> {
+  async update(id: string, updateIngredientDto: UpdateIngredientDto) {
     try {
       return await this.prisma.ingredient.update({
         where: { id },
@@ -39,7 +39,7 @@ export class IngredientService {
     }
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string) {
     try {
       await this.prisma.ingredient.delete({
         where: { id },

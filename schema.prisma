@@ -41,6 +41,16 @@ model Restaurant {
   updatedAt   DateTime @updatedAt
 }
 
+model Table {
+  id        String   @id @default(uuid())
+  capacity  Int
+  reserved  Boolean  @default(false)
+  sector    Int
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Category {
   id        String   @id @default(uuid())
   name      String

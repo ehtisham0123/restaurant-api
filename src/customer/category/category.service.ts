@@ -6,8 +6,8 @@ import { Category } from './entities/category.entity';
 export class CategoryService {
   constructor(private prisma: PrismaService) { }
 
-  async findAll(): Promise<Category[]> {
-    return this.prisma.category.findMany();
+  async findAll() {
+    return await this.prisma.category.findMany();
   }
 
 }

@@ -6,8 +6,8 @@ import { Menu } from './entities/menu.entity';
 export class MenuService {
   constructor(private prisma: PrismaService) { }
   
-  async findAll(): Promise<Menu[]> {
-    return this.prisma.menu.findMany();
+  async findAll() {
+    return await this.prisma.menu.findMany();
   }
 
   async findOne(id: string): Promise<Menu> {

@@ -7,18 +7,18 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class CategoryService {
   constructor(private prisma: PrismaService) { }
 
-  async create(createCategoryDto: CreateCategoryDto): Promise<CreateCategoryDto> {
+  async create(createCategoryDto: CreateCategoryDto) {
     const category = await this.prisma.category.create({
       data: createCategoryDto,
     });
     return category;
   }
 
-  async findAll(): Promise<CreateCategoryDto[]> {
-    return this.prisma.category.findMany();
+  async findAll() {
+    return await this.prisma.category.findMany();
   }
 
-  async findOne(id: string): Promise<CreateCategoryDto> {
+  async findOne(id: string) {
     const category = await this.prisma.category.findUnique({
       where: { id },
     });
@@ -28,7 +28,7 @@ export class CategoryService {
     return category;
   }
 
-  async update(id: string, updateCategoryDto: UpdateCategoryDto): Promise<CreateCategoryDto> {
+  async update(id: string, updateCategoryDto: UpdateCategoryDto) {
     try {
       return await this.prisma.category.update({
         where: { id },
@@ -39,7 +39,7 @@ export class CategoryService {
     }
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string) {
     try {
       await this.prisma.category.delete({
         where: { id },

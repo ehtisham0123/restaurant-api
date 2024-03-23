@@ -2,25 +2,24 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { PrismaService } from '../../prisma/prisma.service';
-import { Employee } from './entities/employee.entity';
 
 
 @Injectable()
 export class EmployeeService {
   constructor(private prisma: PrismaService) { }
 
-  create(createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
+  create(createEmployeeDto: CreateEmployeeDto) {
     const employee = this.prisma.user.create({
       data: createEmployeeDto,
     });
     return employee;
   }
 
-  findAll(): Promise<Employee[]> {
+  findAll() {
     return this.prisma.user.findMany();
   }
 
-  async findOne(id: string): Promise<Employee> {
+  async findOne(id: string) {
     const employee = await this.prisma.user.findUnique({
       where: { id },
     });
@@ -30,7 +29,7 @@ export class EmployeeService {
     return employee;
   }
 
-  async update(id: string, updateEmployeeDto: UpdateEmployeeDto): Promise<Employee> {
+  async update(id: string, updateEmployeeDto: UpdateEmployeeDto) {
     try {
       return await this.prisma.user.update({
         where: { id },
@@ -41,7 +40,7 @@ export class EmployeeService {
     }
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string) {
     try {
       await this.prisma.user.delete({
         where: { id },

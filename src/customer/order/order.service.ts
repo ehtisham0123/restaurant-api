@@ -8,52 +8,21 @@ export class OrderService {
   constructor(private prisma: PrismaService) { }
 
   async create(createOrderDto: CreateOrderDto[]) {
-    try {
-      // Create order
-      const order = await this.prisma.order.create({
-        data: {
-          items: {
-            createMany: {
-              data: createOrderDto.map((item) => ({
-                menuId: item.menuId,
-                quantity: item.quantity,
-                price: item.price,
-              })),
-            },
+    const order = await this.prisma.order.create({
+      data: {
+        items: {
+          createMany: {
+            data: createOrderDto.map((item) => ({
+              menuId: item.menuId,
+              quantity: item.quantity,
+              price: item.price,
+            })),
           },
         },
-        include: { items: true },
-      });
+      },
+      include: { items: true },
+    });
 
-      return order;
-    } catch (error) {
-      throw new Error(`Failed to place order: ${error.message}`);
-    }
+    return order;
   }
-
-  // findAll() {
-  //   return `This action returns all order`;
-  // }
-
-  // findOne(id: string) {
-  //   try {
-  //     // Fetch order details including associated items
-  //     const order = await this.prisma.order.findUnique({
-  //       where: { id: id },
-  //       include: { items: true }, // Include order items in the response
-  //     });
-  //     return order;
-  //   } catch (error) {
-  //     throw new Error(`Failed to get order: ${error.message}`);
-  //   }
-  // }
-
-
-  // update(id: string, updateOrderDto: UpdateOrderDto) {
-  //   return `This action updates a #${id} order`;
-  // }
-
-  // remove(id: string) {
-  //   return `This action removes a #${id} order`;
-  // }
 }

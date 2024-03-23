@@ -7,18 +7,18 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class MenuService {
   constructor(private prisma: PrismaService) { }
 
-  async create(createMenuDto: CreateMenuDto): Promise<CreateMenuDto> {
+  async create(createMenuDto: CreateMenuDto) {
     const menu = await this.prisma.menu.create({
       data: createMenuDto
     });
     return menu;
   }
 
-  async findAll(): Promise<CreateMenuDto[]> {
+  async findAll() {
     return this.prisma.menu.findMany();
   }
 
-  async findOne(id: string): Promise<CreateMenuDto> {
+  async findOne(id: string) {
     const menu = await this.prisma.menu.findUnique({
       where: { id },
     });
@@ -28,7 +28,7 @@ export class MenuService {
     return menu;
   }
 
-  async update(id: string, updateMenuDto: UpdateMenuDto): Promise<CreateMenuDto> {
+  async update(id: string, updateMenuDto: UpdateMenuDto) {
     try {
       return await this.prisma.menu.update({
         where: { id },
@@ -38,6 +38,7 @@ export class MenuService {
       throw new NotFoundException(`Menu #${id} not found`);
     }
   }
+  
   async remove(id: string) {
     try {
       await this.prisma.menu.delete({
