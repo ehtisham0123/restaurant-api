@@ -10,6 +10,8 @@ import { CustomerModule } from './customer/customer.module';
 import config from './configs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { AuthModule } from './auth/auth.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -18,11 +20,15 @@ import { join } from 'path';
       serveRoot: '/images',
       rootPath: join(__dirname, '..', 'public', 'images'),
     }),
+    ThrottlerModule.forRoot([{
+      ttl: 60000,
+      limit: 10,
+    }]),
     UserModule,
     PrismaModule,
     AdminModule,
     CustomerModule,
-    // AuthModule
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

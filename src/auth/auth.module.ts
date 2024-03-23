@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
-import { PasswordService } from './password.service';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
 import { SecurityConfig } from '../configs/config.interface';
+import { PasswordService } from './password.service';
 
 @Module({
   imports: [
@@ -14,6 +14,7 @@ import { SecurityConfig } from '../configs/config.interface';
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService) => {
         const securityConfig = configService.get<SecurityConfig>('security');
+
         return {
           secret: configService.get<string>('JWT_ACCESS_SECRET'),
           signOptions: {
@@ -24,12 +25,8 @@ import { SecurityConfig } from '../configs/config.interface';
       inject: [ConfigService],
     }),
   ],
-  providers: [
-    AuthService,
-    AuthController,
-    JwtStrategy,
-    PasswordService,
-  ],
+  controllers: [AuthController],
+  providers: [AuthService,PasswordService, JwtStrategy],
   exports: [],
 })
 export class AuthModule {}

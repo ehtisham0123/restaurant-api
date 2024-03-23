@@ -3,11 +3,24 @@ import { AuthService } from './auth.service';
 import { LoginInput } from './dto/login.input';
 import { RefreshTokenInput } from './dto/refresh-token.input';
 import { Request } from 'express';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { SignupInput } from './dto/signup.input';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
-  
+  constructor(private readonly authService: AuthService) { }
+
+  @Post('signup')
+  async signup(@Body() signupInput: SignupInput) {
+    signupInput.email = signupInput.email.toLowerCase();
+    const { accessToken, refreshToken } = await this.authService.createUser(signupInput);
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+
   @Post('login')
   async login(@Body() { email, password }: LoginInput) {
     const { accessToken, refreshToken } = await this.authService.login(email.toLowerCase(), password);

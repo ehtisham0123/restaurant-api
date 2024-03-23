@@ -1,4 +1,5 @@
-import { PrismaService } from 'nestjs-prisma';
+import { PrismaService } from '../prisma/prisma.service';
+
 import { Prisma, User } from '@prisma/client';
 import {
   Injectable,
@@ -11,6 +12,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordService } from './password.service';
 import { SecurityConfig } from '../configs/config.interface';
+import { SignupInput } from './dto/signup.input';
 
 @Injectable()
 export class AuthService {
@@ -20,6 +22,36 @@ export class AuthService {
     private readonly passwordService: PasswordService,
     private readonly configService: ConfigService,
   ) {}
+
+  async createUser(payload: SignupInput) {
+    const hashedPassword = await this.passwordService.hashPassword(
+      payload.password,
+    );
+
+    try {
+      const user = await this.prisma.user.create({
+        data: {
+          ...payload,
+          password: hashedPassword,
+          role: 'USER',
+        },
+      });
+
+      return this.generateTokens({
+        userId: user.id,
+      });
+    } catch (e) {
+      if (
+        e instanceof Prisma.PrismaClientKnownRequestError &&
+        e.code === 'P2002'
+      ) {
+        throw new ConflictException(`Email ${payload.email} already used.`);
+      }
+      throw new Error(e);
+    }
+  }
+
+
 
   async login(email: string, password: string): Promise<any> {
     const user = await this.prisma.user.findUnique({ where: { email } });
