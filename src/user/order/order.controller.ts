@@ -1,9 +1,13 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Order } from './entities/order.entity';
+import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 
+
+@ApiBearerAuth()
 @ApiTags('User Order')
+@UseGuards(JwtAuthGuard)
 @Controller('user/order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}

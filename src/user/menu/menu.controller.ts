@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, ParseFilePipe, FileTypeValidator, MaxFileSizeValidator, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, ParseFilePipe, FileTypeValidator, MaxFileSizeValidator, NotFoundException, UseGuards } from '@nestjs/common';
 import { MenuService } from './menu.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
@@ -7,10 +7,14 @@ import { diskStorage } from 'multer';
 import { join } from 'path';
 import * as sharp from 'sharp';
 import * as fs from 'fs/promises';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Menu } from './entities/menu.entity';
+import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 
+
+@ApiBearerAuth()
 @ApiTags('User Menu')
+@UseGuards(JwtAuthGuard)
 @Controller('user/menu')
 export class MenuController {
   constructor(private readonly menuService: MenuService) { }

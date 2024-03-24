@@ -1,11 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { TableService } from './table.service';
 import { CreateTableDto } from './dto/create-table.dto';
 import { UpdateTableDto } from './dto/update-table.dto';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Table } from './entities/table.entity';
+import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 
+
+@ApiBearerAuth()
 @ApiTags('User Table')
+@UseGuards(JwtAuthGuard)
 @Controller('user/table')
 export class TableController {
   constructor(private readonly tableService: TableService) { }

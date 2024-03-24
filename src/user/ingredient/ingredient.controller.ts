@@ -1,11 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { IngredientService } from './ingredient.service';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { UpdateIngredientDto } from './dto/update-ingredient.dto';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Ingredient } from './entities/ingredient.entity';
+import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 
+
+@ApiBearerAuth()
 @ApiTags('User Ingredients')
+@UseGuards(JwtAuthGuard)
 @Controller('user/ingredient')
 export class IngredientController {
   constructor(private readonly ingredientService: IngredientService) {}
