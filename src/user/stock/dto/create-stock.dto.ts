@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsNumber, MinLength, MaxLength, IsEnum } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsEnum } from 'class-validator';
 
 export enum UnitOfMeasurement {
     Grams = 'Grams',
@@ -13,7 +13,7 @@ export enum UnitOfMeasurement {
     Others = 'Others',
   }
 
-export class CreateIngredientDto {
+export class CreateStockDto {
     @ApiProperty()
     @IsNotEmpty({ message: 'Name is required' })
     @IsString({ message: 'Name should only contain letters' })

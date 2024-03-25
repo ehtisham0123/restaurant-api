@@ -3,7 +3,7 @@ import { EmployeeModule } from './employee/employee.module';
 import { CategoryModule } from './category/category.module';
 import { MenuModule } from './menu/menu.module';
 import { OrderModule } from './order/order.module';
-import { IngredientModule } from './ingredient/ingredient.module';
+import { stockModule } from './stock/stock.module';
 import { TableModule } from './table/table.module';
 
 @Module({
@@ -12,7 +12,7 @@ import { TableModule } from './table/table.module';
     CategoryModule,
     MenuModule,
     OrderModule,
-    IngredientModule,
+    stockModule,
     TableModule
   ],
 })

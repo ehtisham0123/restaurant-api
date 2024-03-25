@@ -103,7 +103,7 @@ enum UnitOfMeasurement {
   Others
 }
 
-model Ingredient {
+model stock {
   id                String            @id @default(uuid())
   name              String
   quantity          Int

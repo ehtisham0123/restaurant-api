@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `Ingredient` (
+CREATE TABLE `stock` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `quantity` DOUBLE NOT NULL,
