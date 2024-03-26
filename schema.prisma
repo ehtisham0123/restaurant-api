@@ -7,23 +7,43 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum UnitOfMeasurement {
+  Grams
+  Kilograms
+  Milliliters
+  Liters
+  Teaspoons
+  Tablespoons
+  Cups
+  Pieces
+  Others
+}
+
+enum OrderStatus {
+  Pending
+  Confirmed
+  Processing
+  Shipped
+  Delivered
+  Cancelled
+  Returned
+}
+
+enum Label {
+  Home
+  Office
+}
+
 model User {
-  id               String   @id @default(uuid())
-  firstName        String
-  lastName         String
-  email            String   @unique
-  password         String?
-  address          String?
-  salary           Float?
-  employmentStatus String?
-  gender           String
-  contact          String?
-  role             String
-  emergencyContact String?
-  dateOfBirth      String?
-  dateOfHire       String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id        String   @id @default(uuid())
+  firstName String
+  lastName  String
+  email     String   @unique
+  password  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  restaurants Restaurant[]
 }
 
 model Restaurant {
@@ -39,6 +59,15 @@ model Restaurant {
   postalCode  String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
+
+  tables   Table[]
+  menus    Menu[]
+  Order    Order[]
+  stock    stock[]
+  Employee Employee[]
 }
 
 model Table {
@@ -49,6 +78,11 @@ model Table {
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  Order Order[]
 }
 
 model Category {
@@ -60,47 +94,66 @@ model Category {
 }
 
 model Menu {
-  id              String      @id @default(uuid())
+  id              String   @id @default(uuid())
   image           String
   name            String
   price           String
   isAvailable     String
   preparationTime String
-  Category        Category    @relation(fields: [categoryId], references: [id])
-  categoryId      String
-  OrderItem       OrderItem[]
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+ OrderItem       OrderItem[]
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+
 }
 
 model Order {
-  id        String      @id @default(uuid())
-  items     OrderItem[]
-  status    Int         @default(0)
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  id        String   @id @default(uuid())
+  status    Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  restaurantId String
+  restaurant   Restaurant    @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  
+  Table        Table?        @relation(fields: [tableId], references: [id])
+  tableId      String?
+
+  items        OrderItem[]
+  orderAddress OrderAddress?
 }
 
 model OrderItem {
   id       String @id @default(uuid())
   quantity Int
   price    Float
-  order    Order  @relation(fields: [orderId], references: [id])
-  menu     Menu   @relation(fields: [menuId], references: [id])
+  order    Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId  String
+  menu     Menu   @relation(fields: [menuId], references: [id])
   menuId   String
+
 }
 
-enum UnitOfMeasurement {
-  Grams
-  Kilograms
-  Milliliters
-  Liters
-  Teaspoons
-  Tablespoons
-  Cups
-  Pieces
-  Others
+model OrderAddress {
+  id           String   @id @default(uuid())
+  fullName     String
+  mobileNumber String
+  province     String
+  city         String
+  area         String
+  address      String
+  landmark     String?
+  label        Label
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId String @unique
 }
 
 model stock {
@@ -111,4 +164,28 @@ model stock {
   cost              Float
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
+
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+}
+
+model Employee {
+  id               String   @id @default(uuid())
+  firstName        String
+  lastName         String
+  email            String   @unique
+  address          String?
+  salary           Float?
+  employmentStatus String?
+  gender           String
+  contact          String?
+  role             String
+  emergencyContact String?
+  dateOfBirth      String?
+  dateOfHire       String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId String
 }
