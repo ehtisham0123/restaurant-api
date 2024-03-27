@@ -21,7 +21,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly passwordService: PasswordService,
     private readonly configService: ConfigService,
-  ) {}
+  ) { }
 
   async createUser(payload: SignupInput) {
     const hashedPassword = await this.passwordService.hashPassword(
@@ -33,7 +33,6 @@ export class AuthService {
         data: {
           ...payload,
           password: hashedPassword,
-          role: 'USER',
         },
       });
 
@@ -55,23 +54,25 @@ export class AuthService {
 
   async login(email: string, password: string): Promise<any> {
     const user = await this.prisma.user.findUnique({ where: { email } });
-
     if (!user) {
       throw new NotFoundException(`No user found for email: ${email}`);
     }
-
     const passwordValid = await this.passwordService.validatePassword(
       password,
       user.password,
     );
-
     if (!passwordValid) {
       throw new BadRequestException('Invalid password');
     }
-
-    return this.generateTokens({
+    let tokens = this.generateTokens({
       userId: user.id,
     });
+    const { password: _, ...userWithoutPassword } = user;
+    const data = {
+      ...tokens,
+      user: userWithoutPassword,
+    };
+    return data;
   }
 
   validateUser(userId: string): Promise<User> {

@@ -20,6 +20,11 @@ export class CreateTableDto {
     @IsNumber() 
     @IsNotEmpty()
     sector: number;
+
+    @ApiProperty()
+    @IsString() 
+    @IsNotEmpty()
+    restaurantId: string;
 }
 
 

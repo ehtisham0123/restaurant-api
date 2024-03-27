@@ -13,20 +13,8 @@ export class User {
     @ApiProperty({ example: 'john@example.com', description: 'Email address of the User' })
     email: string;
 
-    @ApiProperty({ example: '123 Main St, Cityville', description: 'Address of the User' })
-    address: string;
-
-    @ApiProperty({ example: '+1234567890', description: 'Contact number of the User' })
-    contact: string;
-
-    @ApiProperty({ example: 'Male', description: 'Gender of the User' })
-    gender: string;
-
-    @ApiProperty({ example: '1990-01-01', description: 'Date of birth of the User' })
-    dateOfBirth: string;
-
-    @ApiProperty({ example: 'Owner', description: 'Role of the User' })
-    role: string;
+    @ApiProperty({ example: 'Waqas123', description: 'Password of the User' })
+    passwrod: string;
 
     @ApiProperty({ example: '2024-03-17T22:29:55.062Z', description: 'Date and time when the User was created' })
     createdAt: Date;

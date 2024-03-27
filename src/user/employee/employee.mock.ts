@@ -13,4 +13,6 @@ export const createEmployeeMock: CreateEmployeeDto = {
   dateOfBirth: '1990-01-01',
   role: 'Employee',
   dateOfHire: '2022-01-01', 
+  restaurantId: '202sada2-0sd1-01', 
+
 };

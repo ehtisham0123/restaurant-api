@@ -19,27 +19,10 @@ export class CreateUserDto {
     @IsEmail({}, { message: 'Invalid Email address' })
     email: string;
 
-    @ApiProperty()
-    @IsNotEmpty({ message: 'Address is required' })
-    @MinLength(10, { message: 'Address must be at least 10 characters long' })
-    @MaxLength(200, { message: 'Address cannot exceed 200 characters' })
-    address: string;
 
-    @ApiProperty()
-    @MinLength(7, { message: 'Contact Number must be at least 7 digits long' })
-    @MaxLength(15, { message: 'Contact Number cannot exceed 15 digits' })
-    contact: string;
-
-    @ApiProperty()
-    @IsString({ message: 'Invalid Gender' })
-    gender: string;
-
-    @ApiProperty()
-    @IsString({ message: 'Invalid Date of Birth' })
-    dateOfBirth: string;
-
-    @ApiProperty()
-    @IsString({ message: 'Invalid Role' })
-    role: string;
+    @IsNotEmpty({ message: 'Password is required' })
+    @IsString({ message: 'Password should only contain letters' })
+    @MinLength(8, { message: 'Password must be at least 8 characters long' })
+    password: string;
 
 }

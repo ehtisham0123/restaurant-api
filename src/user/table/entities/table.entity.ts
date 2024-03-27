@@ -15,7 +15,10 @@ export class Table {
 
     @ApiProperty({ example: 0, description: 'Indoor or outdoor sector' })
     sector: number;
-     
+
+    @ApiProperty({ example: 'cksap55v40000mssb41hik5dz', description: 'ID of the resturant to which the table belongs' })
+    restaurantId: string;
+
     @ApiProperty({ example: '2024-03-20T12:00:00.000Z', description: 'Date and time when the Table record was created' })
     createdAt: Date;
 

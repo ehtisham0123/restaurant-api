@@ -22,6 +22,9 @@ export class Menu {
     @ApiProperty({ example: '445ab4c43545345sd4123', description: 'ID of the category to which the menu item belongs' })
     categoryId: string;
 
+    @ApiProperty({ example: 'cksap55v40000mssb41hik5dz', description: 'ID of the resturant to which the menu belongs' })
+    restaurantId: string;
+
     @ApiProperty({ example: '2024-03-20T12:00:00.000Z', description: 'Date and time when the menu item record was created' })
     createdAt: Date;
 

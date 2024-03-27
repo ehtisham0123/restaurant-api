@@ -31,4 +31,9 @@ export class CreateMenuDto {
     @IsString() 
     @IsNotEmpty()
     categoryId: string;
+
+    @ApiProperty()
+    @IsString() 
+    @IsNotEmpty()
+    restaurantId: string;
 }
