@@ -5,6 +5,7 @@ CREATE TABLE `User` (
     `lastName` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NULL,
+    `role` ENUM('Admin', 'User') NOT NULL DEFAULT 'User',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -106,8 +107,6 @@ CREATE TABLE `OrderAddress` (
     `address` VARCHAR(191) NOT NULL,
     `landmark` VARCHAR(191) NULL,
     `label` ENUM('Home', 'Office') NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
     `orderId` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `OrderAddress_orderId_key`(`orderId`),
