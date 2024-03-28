@@ -38,11 +38,8 @@ describe('UserController', () => {
         firstName: 'John',
         lastName: 'Doe',
         email: 'john@example.com',
-        address: '123 Main St',
-        contact: '1234567890',
-        gender: 'Male',
-        dateOfBirth: '1990-01-01',
-        role: 'User',
+        password: '123Main',
+
       };
 
       jest.spyOn(service, 'create').mockResolvedValue(newUser);
@@ -55,7 +52,7 @@ describe('UserController', () => {
   describe('findAll', () => {
     it('should return all users', async () => {
       const users: CreateUserDto[] = [
-        { firstName: 'John', lastName: 'Doe', email: 'john@example.com', address: '123 Main St', contact: '123-456-7890', gender: 'Male', dateOfBirth: '1990-01-01', role: 'Manager' }
+        { firstName: 'John', lastName: 'Doe', email: 'john@example.com', password:'Waqas123' }
       ];
       jest.spyOn(service, 'findAll').mockResolvedValue(users);
 
@@ -66,7 +63,7 @@ describe('UserController', () => {
   describe('findOne', () => {
     it('should return the user with the given ID', async () => {
       const userId = '1';
-      const user = { firstName: 'John', lastName: 'Doe', email: 'john@example.com', address: '123 Main St', contact: '123-456-7890', gender: 'Male', dateOfBirth: '1990-01-01', role: 'Manager' };
+      const user = { firstName: 'John', lastName: 'Doe', email: 'john@example.com', password:'Waqas123' };
       jest.spyOn(service, 'findOne').mockResolvedValue(user);
 
       const result = await controller.findOne(userId);
@@ -78,7 +75,7 @@ describe('UserController', () => {
     it('should update the user with the given ID', async () => {
       const userId = '1';
       const updateDto: UpdateUserDto = { firstName: 'Jane' };
-      const updatedUser = { firstName: 'John', lastName: 'Doe', email: 'john@example.com', address: '123 Main St', contact: '123-456-7890', gender: 'Male', dateOfBirth: '1990-01-01', role: 'Manager' };
+      const updatedUser = { firstName: 'John', lastName: 'Doe', email: 'john@example.com', password:'Waqas123' };
       jest.spyOn(service, 'update').mockResolvedValue(updatedUser);
 
       const result = await controller.update(userId, updateDto);

@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    ports:
+      - 3307:3306
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ResturantPassword
+      MYSQL_DATABASE: restaurant_app
+    volumes:
+      - mysql:/var/lib/mysql
+
+volumes:
+  mysql:
+    name: nest-db

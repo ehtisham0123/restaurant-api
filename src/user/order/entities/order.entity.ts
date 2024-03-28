@@ -32,6 +32,9 @@ export class Order {
   @ApiProperty({ description: 'Unique identifier for the order', example: 1 })
   status: number;
 
+  @ApiProperty({ example: 'cksap55v40000mssb41hik5dz', description: 'ID of the resturant to which the order belongs' })
+  restaurantId: string;
+
   @ApiProperty({ example: '2024-03-20T12:00:00.000Z', description: 'Date and time when the menu item record was created' })
   createdAt: Date;
 

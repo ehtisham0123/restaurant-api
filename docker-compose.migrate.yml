@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  prisma-migrate:
+    container_name: prisma-migrate
+    build:
+      context: prisma
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    ports:
+      - '3307:3306'
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ResturantPassword
+      MYSQL_DATABASE: restaurant_app
+    volumes:
+      - mysql:/var/lib/mysql
+
+volumes:
+  mysql:
+    name: restaurant_app_db

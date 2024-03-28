@@ -18,30 +18,7 @@ export class SignupInput {
   @IsEmail({}, { message: 'Invalid Email address' })
   email: string;
 
-  @ApiProperty()
-  @IsNotEmpty({ message: 'Address is required' })
-  @MinLength(10, { message: 'Address must be at least 10 characters long' })
-  @MaxLength(200, { message: 'Address cannot exceed 200 characters' })
-  address: string;
-
-  @ApiProperty()
-  @MinLength(7, { message: 'Contact Number must be at least 7 digits long' })
-  @MaxLength(15, { message: 'Contact Number cannot exceed 15 digits' })
-  contact: string;
-
-  @ApiProperty()
-  @IsString({ message: 'Invalid Gender' })
-  gender: string;
-
-  @ApiProperty()
-  @IsString({ message: 'Invalid Date of Birth' })
-  dateOfBirth: string;
-
-  @ApiProperty()
-  @IsString({ message: 'Invalid Role' })
-  role: string;
-
-  @ApiProperty({ example: 'password' }) // Optional, for Swagger documentation
+  @ApiProperty({ example: 'password' })
   @IsNotEmpty({ message: 'Password should not be empty' })
   @MinLength(8, { message: 'Password should be at least 8 characters long' })
   password: string;

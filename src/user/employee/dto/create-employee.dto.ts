@@ -58,4 +58,9 @@ export class CreateEmployeeDto {
     @ApiProperty()
     @IsString({ message: 'Invalid Hiring Date' })
     dateOfHire: string;
+
+    @ApiProperty()
+    @IsString() 
+    @IsNotEmpty()
+    restaurantId: string;
 }

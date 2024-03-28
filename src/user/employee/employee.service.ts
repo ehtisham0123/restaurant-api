@@ -9,18 +9,18 @@ export class EmployeeService {
   constructor(private prisma: PrismaService) { }
 
   create(createEmployeeDto: CreateEmployeeDto) {
-    const employee = this.prisma.user.create({
+    const employee = this.prisma.employee.create({
       data: createEmployeeDto,
     });
     return employee;
   }
 
   findAll() {
-    return this.prisma.user.findMany();
+    return this.prisma.employee.findMany();
   }
 
   async findOne(id: string) {
-    const employee = await this.prisma.user.findUnique({
+    const employee = await this.prisma.employee.findUnique({
       where: { id },
     });
     if (!employee) {
@@ -31,7 +31,7 @@ export class EmployeeService {
 
   async update(id: string, updateEmployeeDto: UpdateEmployeeDto) {
     try {
-      return await this.prisma.user.update({
+      return await this.prisma.employee.update({
         where: { id },
         data: updateEmployeeDto,
       });
@@ -42,7 +42,7 @@ export class EmployeeService {
 
   async remove(id: string) {
     try {
-      await this.prisma.user.delete({
+      await this.prisma.employee.delete({
         where: { id },
       });
     } catch (error) {

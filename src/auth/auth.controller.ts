@@ -14,17 +14,12 @@ export class AuthController {
   @Post('signup')
   async signup(@Body() signupInput: SignupInput) {
     signupInput.email = signupInput.email.toLowerCase();
-    const { accessToken, refreshToken } = await this.authService.createUser(signupInput);
-    return {
-      accessToken,
-      refreshToken,
-    };
+    return await this.authService.createUser(signupInput);
   }
 
   @Post('login')
   async login(@Body() { email, password }: LoginInput) {
-    const { accessToken, refreshToken } = await this.authService.login(email.toLowerCase(), password);
-    return { accessToken, refreshToken };
+    return await this.authService.login(email.toLowerCase(), password);
   }
 
   @Post('refresh')

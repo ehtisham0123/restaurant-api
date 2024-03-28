@@ -34,12 +34,18 @@ enum Label {
   Office
 }
 
+enum Role {
+  Admin
+  User
+}
+
 model User {
-  id        String   @id @default(uuid())
+  id        String  @id @default(uuid())
   firstName String
   lastName  String
-  email     String   @unique
+  email     String  @unique
   password  String?
+  role      Role    @default(User)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -94,22 +100,20 @@ model Category {
 }
 
 model Menu {
-  id              String   @id @default(uuid())
+  id              String      @id @default(uuid())
   image           String
   name            String
   price           String
   isAvailable     String
   preparationTime String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
- OrderItem       OrderItem[]
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  OrderItem       OrderItem[]
+  categoryId      String
+  category        Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   restaurantId String
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
-
-
 }
 
 model Order {
@@ -119,10 +123,10 @@ model Order {
   updatedAt DateTime @updatedAt
 
   restaurantId String
-  restaurant   Restaurant    @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
-  
-  Table        Table?        @relation(fields: [tableId], references: [id])
-  tableId      String?
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  Table   Table?  @relation(fields: [tableId], references: [id])
+  tableId String?
 
   items        OrderItem[]
   orderAddress OrderAddress?
@@ -136,11 +140,10 @@ model OrderItem {
   orderId  String
   menu     Menu   @relation(fields: [menuId], references: [id])
   menuId   String
-
 }
 
 model OrderAddress {
-  id           String   @id @default(uuid())
+  id           String  @id @default(uuid())
   fullName     String
   mobileNumber String
   province     String
@@ -149,8 +152,6 @@ model OrderAddress {
   address      String
   landmark     String?
   label        Label
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
 
   order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId String @unique

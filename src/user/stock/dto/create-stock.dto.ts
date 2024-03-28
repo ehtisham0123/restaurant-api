@@ -32,4 +32,9 @@ export class CreateStockDto {
     @ApiProperty()
     @IsEnum(UnitOfMeasurement, { message: 'Invalid unit of measurement' })
     unitOfMeasurement: UnitOfMeasurement;
+
+    @ApiProperty()
+    @IsString() 
+    @IsNotEmpty()
+    restaurantId: string;
 }

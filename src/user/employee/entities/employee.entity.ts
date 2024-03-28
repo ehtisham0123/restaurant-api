@@ -39,6 +39,9 @@ export class Employee {
 
     @ApiProperty({ example: '2023-01-01', description: 'Date of hire of the employee' })
     dateOfHire: string;
+  
+    @ApiProperty({ example: 'cksap55v40000mssb41hik5dz', description: 'ID of the resturant to which the employee belongs' })
+    restaurantId: string;
 
     @ApiProperty({ example: '2024-03-20T12:00:00.000Z', description: 'Date and time when the employee record was created' })
     createdAt: Date;
