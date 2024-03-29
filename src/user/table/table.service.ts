@@ -16,10 +16,16 @@ export class TableService {
 
   findAll() {
     return this.prisma.table.findMany();
-  }
+  } 
 
-  findOne(id: string) {
-    return `This action returns a #${id} table`;
+  async findOne(id: string) {
+    const menu = await this.prisma.table.findUnique({
+      where: { id },
+    });
+    if (!menu) {
+      throw new NotFoundException(`Table #${id} not found`);
+    }
+    return menu;
   }
 
   async update(id: string, updateTableDto: UpdateTableDto) {

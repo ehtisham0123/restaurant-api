@@ -18,7 +18,7 @@ import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 @Controller('user/menu')
 export class MenuController {
   constructor(private readonly menuService: MenuService) { }
- 
+
   @ApiOkResponse({
     type: Menu,
     description: 'Create a new menu',
@@ -95,22 +95,29 @@ export class MenuController {
   }))
   async update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto, @UploadedFile() file: Express.Multer.File,
   ) {
+    if (file) {
+      const thumbnailFilename = `${file.filename}`;
+      await sharp(file.path)
+        .resize(100, 100) // Adjust dimensions as needed
+        .toFile(join('./public/images/sharp', thumbnailFilename));
 
-    const thumbnailFilename = `${file.filename}`;
-    await sharp(file.path)
-      .resize(100, 100) // Adjust dimensions as needed
-      .toFile(join('./public/images/sharp', thumbnailFilename));
-
-    const menuItem = {
-      ...updateMenuDto,
-      image: file.filename,
-    };
-
-    // Save menu item
-    const savedMenuItem = await this.menuService.update(id, menuItem);
-    return { savedMenuItem };
+      const menuItem = {
+        ...updateMenuDto,
+        image: file.filename,
+      };
+      // Save menu item
+      const savedMenuItem = await this.menuService.update(id, menuItem);
+      return { savedMenuItem };
+    } else {
+      const menuItem = {
+        ...updateMenuDto,
+      };
+      // Save menu item
+      const savedMenuItem = await this.menuService.update(id, menuItem);
+      return { savedMenuItem };
+    }
   }
-  
+
   @ApiOkResponse({
     type: Menu,
     description: 'Delete the menu by given id',
