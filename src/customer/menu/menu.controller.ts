@@ -13,18 +13,9 @@ export class MenuController {
     type: Menu,
     description: 'Get all menus',
   })
-  @Get()
-  findAll() {
-    return this.menuService.findAll();
-  }
-
-  @ApiOkResponse({
-    type: Menu,
-    description: 'Get menu by given id',
-  })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.menuService.findOne(id);
+  findAll(@Param('id') id: string) {
+    return this.menuService.findAll(id);
   }
 }
 
