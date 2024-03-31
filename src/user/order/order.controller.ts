@@ -1,8 +1,9 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Order } from './entities/order.entity';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
+import { UpdateOrderDto } from './dto/update-order.dto';
 
 
 @ApiBearerAuth()
@@ -10,16 +11,16 @@ import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 @UseGuards(JwtAuthGuard)
 @Controller('user/order')
 export class OrderController {
-  constructor(private readonly orderService: OrderService) {}
-  
+  constructor(private readonly orderService: OrderService) { }
+
   @ApiOkResponse({
     isArray: true,
     type: Order,
     description: 'Get all orders',
   })
-  @Get()
-  findAll() {
-    return this.orderService.findAll();
+  @Get('all/:restaurantId')
+  findAll(@Param('restaurantId') restaurantId: string) {
+    return this.orderService.findAll(restaurantId);
   }
 
   @ApiOkResponse({
@@ -30,4 +31,17 @@ export class OrderController {
   findOne(@Param('id') id: string) {
     return this.orderService.findOne(id);
   }
+
+
+  @ApiOkResponse({
+    type: Order,
+    description: 'updated Oder Status with given id',
+  })
+  @Patch('update-status/:orderId')
+  update(@Param('orderId') orderId: string, @Body() updateOrderDto: UpdateOrderDto) {
+    console.log(orderId);
+
+    return this.orderService.updateOrderStatus(orderId, updateOrderDto);
+  }
+
 }
