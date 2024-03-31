@@ -39,8 +39,6 @@ export class OrderController {
   })
   @Patch('update-status/:orderId')
   update(@Param('orderId') orderId: string, @Body() updateOrderDto: UpdateOrderDto) {
-    console.log(orderId);
-
     return this.orderService.updateOrderStatus(orderId, updateOrderDto);
   }
 
