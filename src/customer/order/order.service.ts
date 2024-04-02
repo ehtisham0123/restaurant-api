@@ -13,17 +13,18 @@ export class OrderService {
   async create(createOrderDto: CreateOrderDto) {
     const orderData = {
       restaurant: { connect: { id: createOrderDto.restaurantId } },
-      Table: { connect: { id: createOrderDto.tableId } },
+      ...(createOrderDto.tableId && {
+        Table: { connect: { id: createOrderDto.tableId } }
+      }),
       ...(createOrderDto.orderAddress && {
         orderAddress: {
           create: {
             fullName: createOrderDto.orderAddress.fullName,
             mobileNumber: createOrderDto.orderAddress.mobileNumber,
-            province: createOrderDto.orderAddress.province,
+            email: createOrderDto.orderAddress.email,
             city: createOrderDto.orderAddress.city,
             area: createOrderDto.orderAddress.area,
             address: createOrderDto.orderAddress.address,
-            landmark: createOrderDto.orderAddress.landmark,
             label: createOrderDto.orderAddress.label,
           },
         },

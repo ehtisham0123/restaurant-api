@@ -36,8 +36,8 @@ export class OrderAddress {
     @ApiProperty({ description: 'Mobile Number', example: '1234567890' })
     mobileNumber: string;
   
-    @ApiProperty({ description: 'Province', example: 'Ontario' })
-    province: string;
+    @ApiProperty({ description: 'Province', example: 'test@gmail.com' })
+    email: string;
   
     @ApiProperty({ description: 'City', example: 'Toronto' })
     city: string;

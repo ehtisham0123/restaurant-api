@@ -32,6 +32,7 @@ enum OrderStatus {
 enum Label {
   Home
   Office
+  Shop
 }
 
 enum Role {
@@ -146,11 +147,10 @@ model OrderAddress {
   id           String  @id @default(uuid())
   fullName     String
   mobileNumber String
-  province     String
   city         String
   area         String
   address      String
-  landmark     String?
+  email        String
   label        Label
 
   order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)

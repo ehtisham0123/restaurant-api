@@ -3,12 +3,13 @@ import { IsInt, IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
 
 enum Label {
     Home = 'Home',
-    Office = 'Office'
+    Office = 'Office',
+    Shop = 'Shop'
 }
 
   
 class OrderItemDto {
-  @ApiProperty({ description: 'Menu ID', example: '112321321321313' })
+  @ApiProperty({ description: 'Menu ID', example: 'e148fbec-ba5a-4c09-8e48-ee43f7bcbf80' })
   @IsString()
   @IsNotEmpty()
   menuId: string;
@@ -38,7 +39,7 @@ export class OrderAddressDto {
     @ApiProperty({ description: 'Province', example: 'Ontario' })
     @IsString()
     @IsNotEmpty()
-    province: string;
+    email: string;
   
     @ApiProperty({ description: 'City', example: 'Toronto' })
     @IsString()
@@ -55,10 +56,7 @@ export class OrderAddressDto {
     @IsNotEmpty()
     address: string;
   
-    @ApiProperty({ description: 'Landmark', example: 'Near Central Park' })
-    landmark?: string;
-  
-    @ApiProperty({ description: 'Label', example: 'Home' }) // Assuming label is a string
+    @ApiProperty({ description: 'Label', example: 'Home' })
     label?: Label;
   }
 
