@@ -1,18 +1,12 @@
 import { PrismaService } from '../prisma/prisma.service';
-
 import { Prisma, User } from '@prisma/client';
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-  ConflictException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordService } from './password.service';
 import { SecurityConfig } from '../configs/config.interface';
 import { SignupInput } from './dto/signup.input';
+import { Role } from '../common/enums/role.enum'; // Import your Role enum
 
 @Injectable()
 export class AuthService {
@@ -23,23 +17,26 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) { }
 
+  // Method to create a new user
   async createUser(payload: SignupInput) {
-    const hashedPassword = await this.passwordService.hashPassword(
-      payload.password,
-    );
-
+    // Hash the password
+    const hashedPassword = await this.passwordService.hashPassword(payload.password);
     try {
+      // Create the user in the database
       const user = await this.prisma.user.create({
         data: {
           ...payload,
           password: hashedPassword,
+          role: Role.User, // Assign a default role during user creation
         },
       });
 
       return this.generateTokens({
         userId: user.id,
+        role: user.role,
       });
     } catch (e) {
+      // Handle errors, such as email duplication
       if (
         e instanceof Prisma.PrismaClientKnownRequestError &&
         e.code === 'P2002'
@@ -50,52 +47,58 @@ export class AuthService {
     }
   }
 
-
-
+  // Method to authenticate a user
   async login(email: string, password: string): Promise<any> {
-    const user = await this.prisma.user.findUnique({ where: { email } });
+    // Find the user by email
+    const user  = await this.prisma.user.findUnique({ where: { email } });
+    // Check if user exists
     if (!user) {
       throw new NotFoundException(`No user found for email: ${email}`);
     }
-    const passwordValid = await this.passwordService.validatePassword(
-      password,
-      user.password,
-    );
+    // Validate the password
+    const passwordValid = await this.passwordService.validatePassword(password, user.password);
     if (!passwordValid) {
       throw new BadRequestException('Invalid password');
     }
-    let tokens = this.generateTokens({
+    // Generate tokens for the authenticated user
+    const tokens = this.generateTokens({
       userId: user.id,
+      role: user.role,
     });
+    // Return user data along with tokens
     const { password: _, ...userWithoutPassword } = user;
-    const data = {
+    return {
       ...tokens,
       user: userWithoutPassword,
     };
-    return data;
   }
 
+  // Method to validate a user
   validateUser(userId: string): Promise<User> {
     return this.prisma.user.findUnique({ where: { id: userId } });
   }
 
+  // Method to get user details from token
   getUserFromToken(token: string): Promise<User> {
-    const id = this.jwtService.decode(token)['userId'];
-    return this.prisma.user.findUnique({ where: { id } });
+    const { userId } = this.jwtService.decode(token);
+    return this.prisma.user.findUnique({ where: { id: userId } });
   }
 
-  generateTokens(payload: { userId: string }): any {
+  // Method to generate access and refresh tokens
+  generateTokens(payload: { userId: string, role: string }): any {
     return {
       accessToken: this.generateAccessToken(payload),
       refreshToken: this.generateRefreshToken(payload),
     };
   }
 
-  private generateAccessToken(payload: { userId: string }): string {
+  // Method to generate access token
+  private generateAccessToken(payload: { userId: string, role: string }): string {
     return this.jwtService.sign(payload);
   }
 
-  private generateRefreshToken(payload: { userId: string }): string {
+  // Method to generate refresh token
+  private generateRefreshToken(payload: { userId: string, role: string }): string {
     const securityConfig = this.configService.get<SecurityConfig>('security');
     return this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_SECRET'),
@@ -105,12 +108,13 @@ export class AuthService {
 
   refreshToken(token: string) {
     try {
-      const { userId } = this.jwtService.verify(token, {
+      const { userId,role } = this.jwtService.verify(token, {
         secret: this.configService.get('JWT_REFRESH_SECRET'),
       });
-
+      const user = this.prisma.user.findUnique({ where: { id: userId } });
       return this.generateTokens({
         userId,
+        role: role,
       });
     } catch (e) {
       throw new UnauthorizedException();

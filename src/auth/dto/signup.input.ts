@@ -1,5 +1,6 @@
-import { IsEmail, IsNotEmpty, MinLength, IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength, IsOptional, IsString, MaxLength, IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger'; // Optional, for Swagger documentation
+import { Role } from '../../common/enums/role.enum';
 
 export class SignupInput {
 
@@ -22,5 +23,13 @@ export class SignupInput {
   @IsNotEmpty({ message: 'Password should not be empty' })
   @MinLength(8, { message: 'Password should be at least 8 characters long' })
   password: string;
+
+  @ApiProperty({
+    enum: Role,
+    description: 'The role of the user',
+    default: Role.User, // You can set a default value if you want all users to default to a specific role upon registration
+  })
+  @IsEnum(Role, { message: 'Invalid role' })
+  role: Role;
   
 }
