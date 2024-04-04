@@ -22,6 +22,12 @@ export class Menu {
     @ApiProperty({ example: 'abc123', description: 'ID of the category to which the menu item belongs' })
     categoryId: string;
 
+    @ApiProperty({ 
+        type: [String],
+        description: 'Array of recommended menu item IDs associated with this menu item',
+        example: ['cksap66v50001mssb52hik6ef', 'cksap77v60002mssb63hik7gh']
+    })
+    recommendations: string[];
     
     @ApiProperty({ example: 'cksap55v40000mssb41hik5dz', description: 'ID of the resturant to which the menu item belongs' })
     restaurantId: string;

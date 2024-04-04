@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateMenuDto {
     @ApiProperty()
@@ -26,6 +26,12 @@ export class CreateMenuDto {
     @IsOptional()
     @IsString()
     image: string;
+   
+    @ApiProperty()
+    @IsOptional()
+    @IsArray()
+    @IsString({ each: true })
+    recommendations?: string[];
 
     @ApiProperty()
     @IsString() 

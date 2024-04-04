@@ -15,11 +15,11 @@ const config: Config = {
     path: 'api',
   },
   security: {
-    expiresIn: '2m',
+    // expiresIn: '2m',
+    expiresIn: '7d',
     refreshIn: '7d',
     bcryptSaltOrRound: 10,
   },
 };
 
 export default (): Config => config;
- 

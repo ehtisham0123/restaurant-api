@@ -8,19 +8,56 @@ export class MenuService {
   constructor(private prisma: PrismaService) { }
 
   async create(createMenuDto: CreateMenuDto) {
-    const menu = await this.prisma.menu.create({
-      data: createMenuDto
-    });
-    return menu;
+    const { recommendations, ...menuData } = createMenuDto;
+
+    if (recommendations && recommendations.length) {
+      return this.prisma.$transaction(async (prisma) => {
+        const menu = await prisma.menu.create({
+          data: menuData,
+        });
+
+        await Promise.all(
+          recommendations.map((recommendedMenuId) =>
+            prisma.menuRecommendation.create({
+              data: {
+                originMenuId: menu.id,
+                recommendedMenuId,
+              },
+            }),
+          ),
+        );
+
+        return menu;
+      });
+    } else {
+      return this.prisma.menu.create({
+        data: menuData,
+      });
+    }
   }
 
   async findAll() {
-    return this.prisma.menu.findMany();
+    return this.prisma.menu.findMany({
+      include: {
+        recommendations: {
+          include: {
+            recommendedMenu: true,
+          },
+        },
+      },
+    });
   }
 
   async findOne(id: string) {
     const menu = await this.prisma.menu.findUnique({
       where: { id },
+      include: {
+        recommendations: {
+          include: {
+            recommendedMenu: true,
+          },
+        },
+      },
     });
     if (!menu) {
       throw new NotFoundException(`Menu Item #${id} not found`);
@@ -29,16 +66,37 @@ export class MenuService {
   }
 
   async update(id: string, updateMenuDto: UpdateMenuDto) {
-    try {
-      return await this.prisma.menu.update({
+    const { recommendations, ...updateData } = updateMenuDto;
+
+    return this.prisma.$transaction(async (prisma) => {
+      const updatedMenu = await prisma.menu.update({
         where: { id },
-        data: updateMenuDto,
+        data: updateData,
+      }).catch((error) => {
+        throw new NotFoundException(`Menu #${id} not found`);
       });
-    } catch (error) {
-      throw new NotFoundException(`Menu #${id} not found`);
-    }
+
+      if (recommendations) {
+        await prisma.menuRecommendation.deleteMany({
+          where: { originMenuId: id },
+        });
+
+        await Promise.all(
+          recommendations.map((recommendedMenuId) =>
+            prisma.menuRecommendation.create({
+              data: {
+                originMenuId: id,
+                recommendedMenuId,
+              },
+            }),
+          ),
+        );
+      }
+
+      return updatedMenu;
+    });
   }
-  
+
   async remove(id: string) {
     try {
       await this.prisma.menu.delete({

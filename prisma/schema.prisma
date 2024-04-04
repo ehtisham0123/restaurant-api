@@ -101,20 +101,21 @@ model Category {
 }
 
 model Menu {
-  id              String      @id @default(uuid())
+  id              String               @id @default(uuid())
   image           String
   name            String
   price           String
   isAvailable     String
   preparationTime String
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
   OrderItem       OrderItem[]
   categoryId      String
-  category        Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-
-  restaurantId String
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  category        Category             @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  recommendations MenuRecommendation[] @relation("OriginMenu")
+  recommendedBy   MenuRecommendation[] @relation("RecommendedMenu")
+  restaurantId    String
+  restaurant      Restaurant           @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 }
 
 model Order {
@@ -189,4 +190,14 @@ model Employee {
 
   Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   restaurantId String
+}
+
+model MenuRecommendation {
+  id                String   @id @default(uuid())
+  originMenuId      String
+  recommendedMenuId String
+  originMenu        Menu     @relation(name: "OriginMenu", fields: [originMenuId], references: [id])
+  recommendedMenu   Menu     @relation(name: "RecommendedMenu", fields: [recommendedMenuId], references: [id])
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }
